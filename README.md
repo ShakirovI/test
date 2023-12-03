@@ -5,9 +5,9 @@
 ### Чтобы запустить
 
  В этой папке тыкаем
-    ```
-    docker compose up -d
-    ```
+
+`docker compose up -d`
+
 ----------
 ### Csfixer, Xdebug, Дока к api
 
