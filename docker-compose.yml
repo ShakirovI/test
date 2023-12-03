@@ -15,7 +15,7 @@ services:
       - app
     links:
       - app
-
+## докерфайлов может быть много, что-то на стенд, что-то локально, что-то мб под прод
   app:
     container_name: app
     build:
