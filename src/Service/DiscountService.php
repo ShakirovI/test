@@ -15,7 +15,7 @@ class DiscountService
         if ($currentDate > $dateOfTrip || $currentDate < $dateOfBirth) {
             // этой проверки тут не должно быть, архитектурно верно вынести ее на уровень выше
             // но уровня выше в этом репозитории нет, потому проверка тут стоит, прост чтобы была
-            return 9;
+            return 0;
         }
 
         return $this->getCalendarDiscount($dateOfTrip, $currentDate, $price)
