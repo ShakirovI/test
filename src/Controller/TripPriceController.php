@@ -51,6 +51,7 @@ class TripPriceController extends AbstractController
             new DateTimeImmutable(),
             (float)$queryParams['price']
             );
+
         return $this->json(['status' => Response::HTTP_OK, 'content' => ['tripPriceWithDiscount'=> $result]]);
     }
 
