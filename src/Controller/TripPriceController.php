@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Service\DiscountService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use DateTimeImmutable;
@@ -38,19 +39,19 @@ class TripPriceController extends AbstractController
                     ]
                 ),
             ])
-    )] #[OA\Tag(name: 'tripPrice')]
-    public function getPrice(Request $request) : float
+    )]
+    public function getPrice(Request $request) : JsonResponse
     {
         $queryParams = [];
         parse_str($request->getQueryString(), $queryParams);
 
-        $a = $queryParams['price'] - $this->discountService->getTotalDiscount(
+        $result = $queryParams['price'] - $this->discountService->getTotalDiscount(
             DateTimeImmutable::createFromFormat('Y-m-d',$queryParams['dateOfTrip'] )->setTime(0, 0),
             DateTimeImmutable::createFromFormat('Y-m-d',$queryParams['dateOfBirth'] )->setTime(0, 0),
             new DateTimeImmutable(),
             (float)$queryParams['price']
             );
-        dd($a);
+        return $this->json(['status' => Response::HTTP_OK, 'content' => ['tripPriceWithDiscount'=> $result]]);
     }
 
 }
