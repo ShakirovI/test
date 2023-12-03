@@ -1,22 +1,22 @@
 <?php
+
 declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Service\DiscountService;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use DateTimeImmutable;
-use OpenApi\Attributes as OA;
 
 class TripPriceController extends AbstractController
 {
     public function __construct(
         private readonly DiscountService $discountService
-    )
-    {
+    ) {
     }
 
     #[Route('/api/price', methods: ['GET'])]
@@ -35,24 +35,23 @@ class TripPriceController extends AbstractController
                         'errors' => [],
                         'response' => [
                             'tripPriceWithDiscount' => 90,
-                        ]
+                        ],
                     ]
                 ),
             ])
     )]
-    public function getPrice(Request $request) : JsonResponse
+    public function getPrice(Request $request): JsonResponse
     {
         $queryParams = [];
         parse_str($request->getQueryString(), $queryParams);
 
         $result = $queryParams['price'] - $this->discountService->getTotalDiscount(
-            DateTimeImmutable::createFromFormat('Y-m-d',$queryParams['dateOfTrip'] )->setTime(0, 0),
-            DateTimeImmutable::createFromFormat('Y-m-d',$queryParams['dateOfBirth'] )->setTime(0, 0),
-            new DateTimeImmutable(),
-            (float)$queryParams['price']
-            );
+            \DateTimeImmutable::createFromFormat('Y-m-d', $queryParams['dateOfTrip'])->setTime(0, 0),
+            \DateTimeImmutable::createFromFormat('Y-m-d', $queryParams['dateOfBirth'])->setTime(0, 0),
+            new \DateTimeImmutable(),
+            (float) $queryParams['price']
+        );
 
-        return $this->json(['status' => Response::HTTP_OK, 'content' => ['tripPriceWithDiscount'=> $result]]);
+        return $this->json(['status' => Response::HTTP_OK, 'content' => ['tripPriceWithDiscount' => $result]]);
     }
-
 }
